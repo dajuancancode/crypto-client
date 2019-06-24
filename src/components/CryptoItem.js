@@ -3,37 +3,66 @@ import { Text, View, AppRegistry, StyleSheet, Image } from 'react-native'
 import { robotoWeights } from 'react-native-typography'
 
 export default class CryptoItem extends Component {
+
+  constructor(props) {
+    super(props)
+  }
+
+  moneyConverter(labelValue){
+    // Nine Zeroes for Billions
+    return Math.abs(Number(labelValue)) >= 1.0e+9
+
+    ? (Math.abs(Number(labelValue)) / 1.0e+9).toFixed(2) + "B"
+    // Six Zeroes for Millions 
+    : Math.abs(Number(labelValue)) >= 1.0e+6
+
+    ? (Math.abs(Number(labelValue)) / 1.0e+6).toFixed(2) + "M"
+    // Three Zeroes for Thousands
+    : Math.abs(Number(labelValue)) >= 1.0e+3
+
+    ? (Math.abs(Number(labelValue)) / 1.0e+3).toFixed(2) + "K"
+
+    : Math.abs(Number(labelValue));
+  }
+
+  colorConverter(number){
+    if (number < 0) {
+      return {color: '#FD0004'}
+    }
+    return {color: '#7FC277'}
+  }
+
   render() {
     return (
       <View style={styles.main}>
         <View style={styles.topContainer}>
           <View style={styles.logoContainer}>
-            <Image source={{uri: 'https://facebook.github.io/react/logo-og.png'}}
-              style={{width: 32, height: 32, marginRight: 5, borderRadius: 100}}/>
-            <View style={styles.introTextContainer}>
+            <Image source={{uri: this.props.item.logo}}
+              style={styles.logo}/>
+            <View style={styles.logoIntroTextContainer}>
               <Text style={[robotoWeights.regular, {fontSize: 20}]}>{this.props.item.name}</Text>
               <Text style={[robotoWeights.light, {fontSize: 16}]}>{this.props.item.symbol}</Text>
             </View>
           </View>
           <View style={styles.introTextContainer}>
-            <Text style={[robotoWeights.light, {fontSize: 16}]}>{this.props.item.price}</Text>
-            <Text style={[robotoWeights.light, {fontSize: 16}]}>{this.props.item.percent_change_24h}</Text>
+            <Text style={[robotoWeights.light, {fontSize: 16, textAlign:'left', marginRight: 5}]}>$ {this.props.item.price}</Text>
+            <Text style={[robotoWeights.light, {fontSize: 16, textAlign:'left', marginRight: 5}, this.colorConverter(this.props.item.percent_change_24h)]}>{this.props.item.percent_change_24h} %</Text>
           </View>
         </View>
         <View style={styles.bottomContainer}>
           <View style={styles.infoContainer}>
             <Text style={[robotoWeights.light, {fontSize: 13}]}>Market Cap</Text>
-            <Text style={[robotoWeights.thin, {fontSize: 13}]}>$107,420,012,961</Text>
+            <Text style={[robotoWeights.thin, {fontSize: 13}]}>$ {this.moneyConverter(this.props.item.market_cap)}</Text>
           </View>
           <View style={styles.infoContainer}>
             <Text style={[robotoWeights.light, {fontSize: 13}]}>Volume (24h)</Text>
-            <Text style={[robotoWeights.thin, {fontSize: 13}]}>$3,557,100,000</Text>
+            <Text style={[robotoWeights.thin, {fontSize: 13}]}>$ {this.moneyConverter(this.props.item.volume)}</Text>
           </View>
           <View style={[styles.infoContainer, {borderRightWidth: 0}]}>
             <Text style={[robotoWeights.light, {fontSize: 13}]}>Circulating Supply</Text>
-            <Text style={[robotoWeights.thin, {fontSize: 13}]}>$17,146,900 BTC</Text>
+            <Text style={[robotoWeights.thin, {fontSize: 13}]}>$ {this.moneyConverter(this.props.item.circulating_supply)} {this.props.item.symbol}</Text>
           </View>
-        </View>    
+        </View> 
       </View>
     )
   }
@@ -42,7 +71,7 @@ export default class CryptoItem extends Component {
 const styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    width: '95%',
+    width: '97%',
     alignSelf: 'center',
     borderColor: '#000',
     borderStyle: 'solid',
@@ -54,18 +83,26 @@ const styles = StyleSheet.create({
   },
   introtextContainer: {
     flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    borderColor: '#000',
+    borderStyle: 'solid',
+    borderWidth: 1,
     
   },
   logoContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 5,
+
+  },
+  logo: {
+    width: 32,
+    height: 32,
+    marginRight: 5,
   },
   topContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
     height: '50%',
     width: '100%',
@@ -87,8 +124,8 @@ const styles = StyleSheet.create({
     borderRightWidth: 2,
     borderColor: '#EEEEEE',
     justifyContent: 'center',
-    alignItems: 'flex-start',
-    paddingLeft: 5,
+    alignItems: 'center',
+    textAlign: 'center'
   }
 })
 
