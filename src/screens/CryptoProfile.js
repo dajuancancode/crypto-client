@@ -1,21 +1,23 @@
 import React, { Component } from 'react'
-import { AppRegistry, View, FlatList, ActivityIndicator } from 'react-native'
-
+import { Text, View, AppRegistry, ActivityIndicator } from 'react-native'
 import Header from '../components/Header'
-import CryptoItem from '../components/CryptoItem'
+import AboutCrypto from '../components/AboutCrypto'
+import CryptoNews from '../components/CryptoNews'
 
-export default class Home extends Component {
-  constructor(props){
-    super(props);
-    this.state = { isLoading: true}
+export default class CryptoProfile extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {isLoading: true}
   }
 
   static navigationOptions = {
     header: null
   };
-
+  
   componentDidMount(){
-    return fetch('https://young-garden-24176.herokuapp.com/api/list')
+    const symbol = this.props.navigation.getParam("symbol")
+    return fetch(`https://young-garden-24176.herokuapp.com/api/crypto/${symbol}`)
       .then((response) => response.json())
       .then((responseJson) => {
 
@@ -32,9 +34,7 @@ export default class Home extends Component {
       });
   }
 
-
-
-  render(){
+  render() {
 
     if(this.state.isLoading){
       return(
@@ -44,19 +44,14 @@ export default class Home extends Component {
       )
     }
 
-    return(
+    return (
       <View style={{flex: 1}}>
         <Header />
-        <View style={{flex: 4}}>
-          <FlatList
-            data={this.state.dataSource}
-            renderItem={({item}) => <CryptoItem item={item}/>}
-            keyExtractor={(item, index) => item.id}
-          />
-        </View>
+        <AboutCrypto item={this.state.dataSource} />
+        <CryptoNews item={this.state.dataSource.news} />
       </View>
-    );
+    )
   }
 }
 
-AppRegistry.registerComponent('Home', () => Home)
+AppRegistry.registerComponent('CryptoProfile', () => CryptoProfile)

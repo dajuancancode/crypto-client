@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Text, View, AppRegistry, StyleSheet, Image } from 'react-native'
+import { Text, View, AppRegistry, StyleSheet, Image, TouchableNativeFeedback } from 'react-native'
 import { robotoWeights } from 'react-native-typography'
+import { withNavigation } from 'react-navigation'
 
-export default class CryptoItem extends Component {
+class CryptoItem extends Component {
 
   constructor(props) {
     super(props)
@@ -37,8 +38,14 @@ export default class CryptoItem extends Component {
       <View style={styles.main}>
         <View style={styles.topContainer}>
           <View style={styles.logoContainer}>
-            <Image source={{uri: this.props.item.logo}}
-              style={styles.logo}/>
+            <TouchableNativeFeedback
+              onPress={() =>
+                this.props.navigation.navigate("CryptoProfile", {symbol:this.props.item.symbol})
+              }
+            >
+              <Image source={{uri: this.props.item.logo}}
+                style={styles.logo}/>
+            </TouchableNativeFeedback>
             <View style={styles.logoIntroTextContainer}>
               <Text style={[robotoWeights.regular, {fontSize: 20}]}>{this.props.item.name}</Text>
               <Text style={[robotoWeights.light, {fontSize: 16}]}>{this.props.item.symbol}</Text>
@@ -77,9 +84,8 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: 1,
     borderRadius: 5,
-    marginTop: 15,
     marginBottom: 15,
-    height: 100,
+    flex: 2,
   },
   introtextContainer: {
     flexDirection: 'column',
@@ -129,5 +135,4 @@ const styles = StyleSheet.create({
   }
 })
 
-
-AppRegistry.registerComponent('CryptoItem', CryptoItem)
+export default withNavigation(CryptoItem)
