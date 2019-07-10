@@ -1,62 +1,47 @@
 import React, { Component } from 'react'
-import { AppRegistry, View, FlatList, ActivityIndicator } from 'react-native'
-
-import Header from '../components/Header'
-import CryptoItem from '../components/CryptoItem'
-
+import { Text, View, StyleSheet, TouchableNativeFeedback, StatusBar } from 'react-native'
+import {material} from 'react-native-typography'
+import LinearGradient from 'react-native-linear-gradient'
 export default class Home extends Component {
-  constructor(props){
-    super(props);
-    this.state = { isLoading: true}
+  constructor(props) {
+    super(props)
   }
 
   static navigationOptions = {
     header: null
   };
 
-  componentDidMount(){
-    return fetch('https://young-garden-24176.herokuapp.com/api/list')
-      .then((response) => response.json())
-      .then((responseJson) => {
-
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson.data,
-        }, function(){
-
-        });
-
-      })
-      .catch((error) =>{
-        console.error(error);
-      });
-  }
-
-
-
-  render(){
-
-    if(this.state.isLoading){
-      return(
-        <View style={{flex: 1, padding: 20}}>
-          <ActivityIndicator/>
+  render() {
+    return (
+      
+      <LinearGradient colors={['#0EBE8F', '#38ef7d']} style={{flex: 1}}>
+        <StatusBar translucent  backgroundColor={'#0EBE8F'}/>
+        <View style={{justifyContent: 'center', alignItems: 'center', flex:1}}>
+          <Text style={[material.display3White, {color:'#fff', fontSize: 65}]}>CryptoChain</Text>
+          <Text style={[material.display1White, {color:'#fff', fontSize: 24}]}>A better cryptocurrency monitor</Text>
+          <TouchableNativeFeedback onPress={() => this.props.navigation.navigate('CryptoList')} >
+            <View style={styles.button}>
+              <Text style={[material.subheading, {color: '#11998e'}]}>Get Started</Text>
+            </View>
+          </TouchableNativeFeedback>
         </View>
-      )
-    }
-
-    return(
-      <View style={{flex: 1}}>
-        <Header />
-        <View style={{flex: 4}}>
-          <FlatList
-            data={this.state.dataSource}
-            renderItem={({item}) => <CryptoItem item={item}/>}
-            keyExtractor={(item, index) => item.id}
-          />
-        </View>
-      </View>
-    );
+      </LinearGradient>
+    )
   }
 }
 
-AppRegistry.registerComponent('Home', () => Home)
+const styles = StyleSheet.create({
+  button: {
+    height: 44,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 6,
+    borderColor: '#fff',
+    marginBottom: 10,
+    padding: (10, 25),
+    justifyContent: 'center',
+    backgroundColor: '#fff'
+
+  },
+})

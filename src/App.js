@@ -2,12 +2,14 @@ import React, { Component } from 'react'
 import { AppRegistry } from 'react-native'
 import { createStackNavigator, createAppContainer } from 'react-navigation'
 
-import Home from './screens/Home'
+import CryptoList from './screens/CryptoList'
 import CryptoProfile from './screens/CryptoProfile'
+import Home from './screens/Home'
 
 const AppNavigation = createStackNavigator({
-  Home: Home,
-  CryptoProfile: CryptoProfile
+  Home,
+  CryptoList,
+  CryptoProfile
 })
 
 const NavigationContainer = createAppContainer(AppNavigation)

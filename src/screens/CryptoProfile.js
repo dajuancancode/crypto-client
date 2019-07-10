@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, AppRegistry, ActivityIndicator } from 'react-native'
+import { Text, View, AppRegistry, ActivityIndicator, ScrollView } from 'react-native'
 import Header from '../components/Header'
 import AboutCrypto from '../components/AboutCrypto'
 import CryptoNews from '../components/CryptoNews'
@@ -23,7 +23,7 @@ export default class CryptoProfile extends Component {
 
         this.setState({
           isLoading: false,
-          dataSource: responseJson.data,
+          dataSource: responseJson.cryptoProfile,
         }, function(){
 
         });
@@ -46,9 +46,13 @@ export default class CryptoProfile extends Component {
 
     return (
       <View style={{flex: 1}}>
-        <Header />
-        <AboutCrypto item={this.state.dataSource} />
-        <CryptoNews item={this.state.dataSource.news} />
+        <View style={{flex: 0.25}}>
+          <Header />
+        </View>
+        <ScrollView style={{flex: 2}}>
+          <AboutCrypto item={this.state.dataSource} />
+          <CryptoNews item={this.state.dataSource.news} />
+        </ScrollView>
       </View>
     )
   }

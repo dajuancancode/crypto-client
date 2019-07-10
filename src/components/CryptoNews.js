@@ -17,7 +17,7 @@ export default class CryptoNews extends Component {
           <FlatList
               data={this.props.item}
               renderItem={({item}) => <CryptoNewsItem item={item}/>}
-              keyExtractor={(item, index) => item.id}
+              keyExtractor={(item, index) => `list-item-${index}`}
             />
         </View>
       </View>

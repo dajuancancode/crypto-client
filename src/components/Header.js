@@ -16,8 +16,8 @@ class Header extends Component {
             </TouchableNativeFeedback>
           </View>
           <View style={styles.headerContainer}>
-            <Text style={[robotoWeights.medium, styles.title]}>Crypto App</Text>
-            <Text style={[robotoWeights.light, styles.subtitle]}>Subtitle</Text>
+            <Text style={[robotoWeights.medium, styles.title]}>CryptoChain</Text>
+            <Text style={[robotoWeights.light, styles.subtitle]}>A better cryptocurrency monitor</Text>
           </View>
         </View>
       </View>
@@ -28,7 +28,7 @@ class Header extends Component {
 
 const styles = StyleSheet.create({
   mainHeader: {
-    flex: 1,
+    flex: 0.95,
     backgroundColor: '#0EBE8F',
     flexDirection: 'column',
     justifyContent: 'flex-end',
